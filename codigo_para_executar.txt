@@ -1,0 +1,32 @@
+// ArduMed - exemplo: sensor de temperatura LM35 ligado a um Arduino Uno
+placa_ligar
+  sensor leitura = 61;
+  medida referencia = 5.0;
+  medida volts = leitura * referencia / 1023;
+  medida celsius = volts * 100;
+  medida fahrenheit = celsius * 9 / 5 + 32;
+  exibir volts;
+  exibir celsius;
+  exibir fahrenheit;
+  celsius = (celsius - 1.5) * 2;
+  exibir celsius;
+placa_desligar
+
+
+
+//A ardumed serve para descrever a leitura de um ensor de temp. LM35 ligado a um Arduino UNo, ele converte a leitura em unidades que são úteis.
+//O programa serve como interpretador, porque o Arduino não mede diretamente os volts, ele entrega um número entre 0 e 1023 (como vimos em sistemas embarcados) o 0 significa 0 V e o 1023 é pra tensão de 5 V
+//o sensor LM35 produz 10mV por grau Celsius, por isso o programa converte o número do ADC (analog-to-digital converter), depois volts e depois Celsius
+//  sensor leitura = 61; //de 0 a 1023 e só guarda a informação
+//  medida referencia = 5.0; //tensão de referencia
+//  medida volts = leitura * referencia / 1023; //61 * 5 / 1023
+//  medida celsius = volts * 100;
+//  medida fahrenheit = celsius * 9 / 5 + 32;
+//  exibir volts;
+//  exibir celsius;
+//  exibir fahrenheit;
+//  celsius = (celsius - 1.5) * 2;
+//  exibir celsius;
+//  placa_desligar 
+
+//as quatro primeiras linhas são os quatro exibir do programa

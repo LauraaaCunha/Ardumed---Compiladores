@@ -1,0 +1,449 @@
+Grammar
+
+    0 $accept: programa $end
+
+    1 programa: PLACA_LIGAR comandos PLACA_DESLIGAR
+
+    2 comandos: comandos comando
+    3         | %empty
+
+    4 comando: TIPO_SENSOR IDENT '=' NUMBER ';'
+    5        | TIPO_MEDIDA IDENT '=' expr ';'
+    6        | IDENT '=' expr ';'
+    7        | EXIBIR expr ';'
+
+    8 expr: expr '+' expr
+    9     | expr '-' expr
+   10     | expr '*' expr
+   11     | expr '/' expr
+   12     | '(' expr ')'
+   13     | '-' expr
+   14     | NUMBER
+   15     | IDENT
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    '(' (40) 12
+    ')' (41) 12
+    '*' (42) 10
+    '+' (43) 8
+    '-' (45) 9 13
+    '/' (47) 11
+    ';' (59) 4 5 6 7
+    '=' (61) 4 5 6
+    error (256)
+    PLACA_LIGAR (258) 1
+    PLACA_DESLIGAR (259) 1
+    TIPO_SENSOR (260) 4
+    TIPO_MEDIDA (261) 5
+    EXIBIR (262) 7
+    NUMBER <valor> (263) 4 14
+    IDENT <nome> (264) 4 5 6 15
+    UMINUS (265)
+
+
+Nonterminals, with rules where they appear
+
+    $accept (19)
+        on left: 0
+    programa (20)
+        on left: 1
+        on right: 0
+    comandos (21)
+        on left: 2 3
+        on right: 1 2
+    comando (22)
+        on left: 4 5 6 7
+        on right: 2
+    expr <valor> (23)
+        on left: 8 9 10 11 12 13 14 15
+        on right: 5 6 7 8 9 10 11 12 13
+
+
+State 0
+
+    0 $accept: . programa $end
+
+    PLACA_LIGAR  shift, and go to state 1
+
+    programa  go to state 2
+
+
+State 1
+
+    1 programa: PLACA_LIGAR . comandos PLACA_DESLIGAR
+
+    $default  reduce using rule 3 (comandos)
+
+    comandos  go to state 3
+
+
+State 2
+
+    0 $accept: programa . $end
+
+    $end  shift, and go to state 4
+
+
+State 3
+
+    1 programa: PLACA_LIGAR comandos . PLACA_DESLIGAR
+    2 comandos: comandos . comando
+
+    PLACA_DESLIGAR  shift, and go to state 5
+    TIPO_SENSOR     shift, and go to state 6
+    TIPO_MEDIDA     shift, and go to state 7
+    EXIBIR          shift, and go to state 8
+    IDENT           shift, and go to state 9
+
+    comando  go to state 10
+
+
+State 4
+
+    0 $accept: programa $end .
+
+    $default  accept
+
+
+State 5
+
+    1 programa: PLACA_LIGAR comandos PLACA_DESLIGAR .
+
+    $default  reduce using rule 1 (programa)
+
+
+State 6
+
+    4 comando: TIPO_SENSOR . IDENT '=' NUMBER ';'
+
+    IDENT  shift, and go to state 11
+
+
+State 7
+
+    5 comando: TIPO_MEDIDA . IDENT '=' expr ';'
+
+    IDENT  shift, and go to state 12
+
+
+State 8
+
+    7 comando: EXIBIR . expr ';'
+
+    NUMBER  shift, and go to state 13
+    IDENT   shift, and go to state 14
+    '-'     shift, and go to state 15
+    '('     shift, and go to state 16
+
+    expr  go to state 17
+
+
+State 9
+
+    6 comando: IDENT . '=' expr ';'
+
+    '='  shift, and go to state 18
+
+
+State 10
+
+    2 comandos: comandos comando .
+
+    $default  reduce using rule 2 (comandos)
+
+
+State 11
+
+    4 comando: TIPO_SENSOR IDENT . '=' NUMBER ';'
+
+    '='  shift, and go to state 19
+
+
+State 12
+
+    5 comando: TIPO_MEDIDA IDENT . '=' expr ';'
+
+    '='  shift, and go to state 20
+
+
+State 13
+
+   14 expr: NUMBER .
+
+    $default  reduce using rule 14 (expr)
+
+
+State 14
+
+   15 expr: IDENT .
+
+    $default  reduce using rule 15 (expr)
+
+
+State 15
+
+   13 expr: '-' . expr
+
+    NUMBER  shift, and go to state 13
+    IDENT   shift, and go to state 14
+    '-'     shift, and go to state 15
+    '('     shift, and go to state 16
+
+    expr  go to state 21
+
+
+State 16
+
+   12 expr: '(' . expr ')'
+
+    NUMBER  shift, and go to state 13
+    IDENT   shift, and go to state 14
+    '-'     shift, and go to state 15
+    '('     shift, and go to state 16
+
+    expr  go to state 22
+
+
+State 17
+
+    7 comando: EXIBIR expr . ';'
+    8 expr: expr . '+' expr
+    9     | expr . '-' expr
+   10     | expr . '*' expr
+   11     | expr . '/' expr
+
+    '+'  shift, and go to state 23
+    '-'  shift, and go to state 24
+    '*'  shift, and go to state 25
+    '/'  shift, and go to state 26
+    ';'  shift, and go to state 27
+
+
+State 18
+
+    6 comando: IDENT '=' . expr ';'
+
+    NUMBER  shift, and go to state 13
+    IDENT   shift, and go to state 14
+    '-'     shift, and go to state 15
+    '('     shift, and go to state 16
+
+    expr  go to state 28
+
+
+State 19
+
+    4 comando: TIPO_SENSOR IDENT '=' . NUMBER ';'
+
+    NUMBER  shift, and go to state 29
+
+
+State 20
+
+    5 comando: TIPO_MEDIDA IDENT '=' . expr ';'
+
+    NUMBER  shift, and go to state 13
+    IDENT   shift, and go to state 14
+    '-'     shift, and go to state 15
+    '('     shift, and go to state 16
+
+    expr  go to state 30
+
+
+State 21
+
+    8 expr: expr . '+' expr
+    9     | expr . '-' expr
+   10     | expr . '*' expr
+   11     | expr . '/' expr
+   13     | '-' expr .
+
+    $default  reduce using rule 13 (expr)
+
+
+State 22
+
+    8 expr: expr . '+' expr
+    9     | expr . '-' expr
+   10     | expr . '*' expr
+   11     | expr . '/' expr
+   12     | '(' expr . ')'
+
+    '+'  shift, and go to state 23
+    '-'  shift, and go to state 24
+    '*'  shift, and go to state 25
+    '/'  shift, and go to state 26
+    ')'  shift, and go to state 31
+
+
+State 23
+
+    8 expr: expr '+' . expr
+
+    NUMBER  shift, and go to state 13
+    IDENT   shift, and go to state 14
+    '-'     shift, and go to state 15
+    '('     shift, and go to state 16
+
+    expr  go to state 32
+
+
+State 24
+
+    9 expr: expr '-' . expr
+
+    NUMBER  shift, and go to state 13
+    IDENT   shift, and go to state 14
+    '-'     shift, and go to state 15
+    '('     shift, and go to state 16
+
+    expr  go to state 33
+
+
+State 25
+
+   10 expr: expr '*' . expr
+
+    NUMBER  shift, and go to state 13
+    IDENT   shift, and go to state 14
+    '-'     shift, and go to state 15
+    '('     shift, and go to state 16
+
+    expr  go to state 34
+
+
+State 26
+
+   11 expr: expr '/' . expr
+
+    NUMBER  shift, and go to state 13
+    IDENT   shift, and go to state 14
+    '-'     shift, and go to state 15
+    '('     shift, and go to state 16
+
+    expr  go to state 35
+
+
+State 27
+
+    7 comando: EXIBIR expr ';' .
+
+    $default  reduce using rule 7 (comando)
+
+
+State 28
+
+    6 comando: IDENT '=' expr . ';'
+    8 expr: expr . '+' expr
+    9     | expr . '-' expr
+   10     | expr . '*' expr
+   11     | expr . '/' expr
+
+    '+'  shift, and go to state 23
+    '-'  shift, and go to state 24
+    '*'  shift, and go to state 25
+    '/'  shift, and go to state 26
+    ';'  shift, and go to state 36
+
+
+State 29
+
+    4 comando: TIPO_SENSOR IDENT '=' NUMBER . ';'
+
+    ';'  shift, and go to state 37
+
+
+State 30
+
+    5 comando: TIPO_MEDIDA IDENT '=' expr . ';'
+    8 expr: expr . '+' expr
+    9     | expr . '-' expr
+   10     | expr . '*' expr
+   11     | expr . '/' expr
+
+    '+'  shift, and go to state 23
+    '-'  shift, and go to state 24
+    '*'  shift, and go to state 25
+    '/'  shift, and go to state 26
+    ';'  shift, and go to state 38
+
+
+State 31
+
+   12 expr: '(' expr ')' .
+
+    $default  reduce using rule 12 (expr)
+
+
+State 32
+
+    8 expr: expr . '+' expr
+    8     | expr '+' expr .
+    9     | expr . '-' expr
+   10     | expr . '*' expr
+   11     | expr . '/' expr
+
+    '*'  shift, and go to state 25
+    '/'  shift, and go to state 26
+
+    $default  reduce using rule 8 (expr)
+
+
+State 33
+
+    8 expr: expr . '+' expr
+    9     | expr . '-' expr
+    9     | expr '-' expr .
+   10     | expr . '*' expr
+   11     | expr . '/' expr
+
+    '*'  shift, and go to state 25
+    '/'  shift, and go to state 26
+
+    $default  reduce using rule 9 (expr)
+
+
+State 34
+
+    8 expr: expr . '+' expr
+    9     | expr . '-' expr
+   10     | expr . '*' expr
+   10     | expr '*' expr .
+   11     | expr . '/' expr
+
+    $default  reduce using rule 10 (expr)
+
+
+State 35
+
+    8 expr: expr . '+' expr
+    9     | expr . '-' expr
+   10     | expr . '*' expr
+   11     | expr . '/' expr
+   11     | expr '/' expr .
+
+    $default  reduce using rule 11 (expr)
+
+
+State 36
+
+    6 comando: IDENT '=' expr ';' .
+
+    $default  reduce using rule 6 (comando)
+
+
+State 37
+
+    4 comando: TIPO_SENSOR IDENT '=' NUMBER ';' .
+
+    $default  reduce using rule 4 (comando)
+
+
+State 38
+
+    5 comando: TIPO_MEDIDA IDENT '=' expr ';' .
+
+    $default  reduce using rule 5 (comando)
